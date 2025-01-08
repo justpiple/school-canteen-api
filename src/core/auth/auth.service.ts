@@ -35,12 +35,13 @@ export class AuthService {
   async signIn(username: string, pass: string) {
     const findUser = await this.usersService.getUser({ username });
     if (!findUser)
-      throw new UnauthorizedException(`Email or Password is incorrect`);
+      throw new UnauthorizedException("Email or Password is incorrect");
 
     const correctPass = await compareData(pass, findUser.password);
     if (!correctPass)
       throw new UnauthorizedException("Email or Password is incorrect");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userInfo } = findUser;
 
     const payload: UserWithoutPasswordType = userInfo;

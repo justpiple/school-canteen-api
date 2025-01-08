@@ -8,8 +8,15 @@ import {
   UseGuards,
   Patch,
   ParseIntPipe,
+  UseInterceptors,
+  UploadedFile,
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from "@nestjs/swagger";
 import { MenuService } from "./menu.service";
 import { CreateMenuDto } from "./dto/createMenu.dto";
 import { UpdateMenuDto } from "./dto/updateMenu.dto";
@@ -18,12 +25,18 @@ import { Roles } from "../auth/roles.decorator";
 import { AllowAnon, UseAuth } from "../auth/auth.decorator";
 import { UserWithoutPasswordType } from "../users/users.types";
 import { Role } from "@prisma/client";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { CloudinaryService } from "../cloudinary/cloudinary.service";
+import { fileUploadOptions } from "src/config/fileUpload.config";
 
 @ApiTags("Menu")
 @Controller("menu")
 @UseGuards(AuthGuard)
 export class MenuController {
-  constructor(private readonly menuService: MenuService) {}
+  constructor(
+    private readonly menuService: MenuService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Post()
   @Roles(Role.SUPERADMIN, Role.ADMIN_STAND)
@@ -33,10 +46,17 @@ export class MenuController {
     description:
       "SUPERADMIN can create menus for any stand. ADMIN_STAND can only create menus for their own stand.",
   })
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(FileInterceptor("photo", fileUploadOptions))
   async create(
     @Body() createMenuDto: CreateMenuDto,
     @UseAuth() user: UserWithoutPasswordType,
+    @UploadedFile() file: Express.Multer.File,
   ) {
+    if (file) {
+      const photoUrl = await this.cloudinaryService.uploadImage(file);
+      createMenuDto.photo = photoUrl;
+    }
     return this.menuService.create(createMenuDto, user.id);
   }
 
@@ -69,11 +89,18 @@ export class MenuController {
     description:
       "SUPERADMIN can update any menu. ADMIN_STAND can only update menus for their own stand.",
   })
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(FileInterceptor("photo", fileUploadOptions))
   async update(
     @Param("id", ParseIntPipe) id: number,
     @Body() updateMenuDto: UpdateMenuDto,
     @UseAuth() user: UserWithoutPasswordType,
+    @UploadedFile() file: Express.Multer.File,
   ) {
+    if (file) {
+      const photoUrl = await this.cloudinaryService.uploadImage(file);
+      updateMenuDto.photo = photoUrl;
+    }
     return this.menuService.update(id, updateMenuDto, user.id);
   }
 

@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNumber, IsOptional, IsEnum } from "class-validator";
+import { IsString, IsOptional, IsEnum, IsInt } from "class-validator";
 import { MenuType } from "@prisma/client";
+import { Type } from "class-transformer";
 
 export class CreateMenuDto {
   @ApiProperty({ description: "Name of the menu item" })
@@ -13,23 +14,32 @@ export class CreateMenuDto {
   description?: string;
 
   @ApiProperty({ description: "Price of the menu item" })
-  @IsNumber()
+  @IsInt()
+  @Type(() => Number)
   price: number;
 
-  @ApiProperty({ description: "Type of menu item (Food or Drink)" })
+  @ApiProperty({
+    description: "Type of menu item (Food or Drink)",
+    enum: MenuType,
+  })
   @IsEnum(MenuType)
   type: MenuType;
 
-  @ApiProperty({ description: "Photo URL for the menu item", required: false })
+  @ApiProperty({
+    description: "Photo File for the menu item",
+    required: false,
+    format: "binary",
+    type: "string",
+  })
   @IsOptional()
-  @IsString()
   photo?: string;
 
   @ApiProperty({
     description: "ID of the stand this menu belongs to",
     required: false,
   })
-  @IsNumber()
+  @IsInt()
+  @Type(() => Number)
   @IsOptional()
   standId?: number;
 }

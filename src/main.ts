@@ -16,7 +16,14 @@ async function bootstrap() {
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
   app.enableCors();
   app.useGlobalInterceptors(new ResponseInterceptor());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
 
   const documentConfig = new DocumentBuilder()
     .setTitle("School Canteen")

@@ -129,7 +129,7 @@ export class MenuService {
   ): MenuWithDiscountType[] {
     return menus.map((menu) => {
       const menuDiscounts = menu.discounts;
-      const { discounts, ...menuWithoutDiscounts } = menu;
+      const { discounts, ...menuWithoutDiscounts } = menu; // eslint-disable-line @typescript-eslint/no-unused-vars
 
       if (menuDiscounts.length > 0) {
         const highestDiscount = menuDiscounts.reduce((prev, current) =>
