@@ -5,13 +5,15 @@ import { APP_PIPE } from "@nestjs/core";
 import { AuthModule } from "./core/auth/auth.module";
 import { UsersModule } from "./core/users/users.module";
 import { StandsModule } from "./core/stands/stands.module";
+import { DiscountsModule } from "./core/discounts/discounts.module";
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ envFilePath: ".env" }),
     AuthModule,
     UsersModule,
     StandsModule,
-    ConfigModule.forRoot({ envFilePath: ".env" }),
+    DiscountsModule,
   ],
   controllers: [AppController],
   providers: [
