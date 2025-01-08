@@ -50,9 +50,9 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (requiredRoles) {
+    if (requiredRoles.length > 0) {
       // Check if user roles include any of the required roles
-      const userRole = payload.role; // Role di dalam payload
+      const userRole = payload.role;
       if (!requiredRoles.some((role) => userRole === role)) {
         throw new ForbiddenException(
           "You do not have permission to access this resource",
