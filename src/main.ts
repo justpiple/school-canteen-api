@@ -37,6 +37,7 @@ async function bootstrap() {
       description: "Enter JWT token",
       in: "header",
     })
+    .addServer("http://localhost:3000", "development local")
     .build();
 
   const document = SwaggerModule.createDocument(app, documentConfig);
