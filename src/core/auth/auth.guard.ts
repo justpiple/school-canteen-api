@@ -50,7 +50,7 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (requiredRoles.length > 0) {
+    if (requiredRoles?.length > 0) {
       // Check if user roles include any of the required roles
       const userRole = payload.role;
       if (!requiredRoles.some((role) => userRole === role)) {

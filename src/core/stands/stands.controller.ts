@@ -12,7 +12,7 @@ import {
 import { StandsService } from "./stands.service";
 import { CreateStandDto } from "./dto/createStand.dto";
 import { UpdateStandDto } from "./dto/updateStand.dto";
-import { UseAuth } from "../auth/auth.decorator";
+import { AllowAnon, UseAuth } from "../auth/auth.decorator";
 import { AuthGuard } from "../auth/auth.guard";
 import { UserWithoutPasswordType } from "../users/users.types";
 import { PrismaService } from "src/lib/prisma/prisma.service";
@@ -53,7 +53,7 @@ export class StandsController {
   }
 
   @Get("me")
-  @Roles("ADMIN_STAND")
+  @Roles(Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Get own stand",
@@ -75,6 +75,7 @@ export class StandsController {
     summary: "Get stand by ID",
     description: "Retrieves a specific stand by its ID.",
   })
+  @AllowAnon()
   async findOne(@Param("id") id: number) {
     return this.standsService.findOne(id);
   }

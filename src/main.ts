@@ -1,7 +1,8 @@
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { LogLevel, VersioningType } from "@nestjs/common";
+import { LogLevel, ValidationPipe, VersioningType } from "@nestjs/common";
 import { AppModule } from "./app.module";
+import { ResponseInterceptor } from "./common/response.interceptor";
 
 async function bootstrap() {
   const isProduction = process.env.NODE_ENV === "production";
@@ -14,6 +15,8 @@ async function bootstrap() {
   });
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
   app.enableCors();
+  app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useGlobalPipes(new ValidationPipe());
 
   const documentConfig = new DocumentBuilder()
     .setTitle("School Canteen")

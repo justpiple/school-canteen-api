@@ -25,7 +25,11 @@ export class CreateMenuDto {
   @IsString()
   photo?: string;
 
-  @ApiProperty({ description: "ID of the stand this menu belongs to" })
+  @ApiProperty({
+    description: "ID of the stand this menu belongs to",
+    required: false,
+  })
   @IsNumber()
-  standId: number;
+  @IsOptional()
+  standId?: number;
 }

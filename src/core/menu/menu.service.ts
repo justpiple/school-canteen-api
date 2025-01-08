@@ -71,7 +71,7 @@ export class MenuService {
     return this.applyActiveDiscounts(menus);
   }
 
-  async findOne(id: number, userId: string) {
+  async findOne(id: number) {
     const menu = await this.prisma.menu.findUnique({
       where: { id },
       include: {
@@ -87,8 +87,6 @@ export class MenuService {
     if (!menu) {
       throw new NotFoundException(`Menu with ID '${id}' not found.`);
     }
-
-    await this.verifyAdminPermissions(userId, menu);
 
     return this.applyActiveDiscounts([menu])[0];
   }
@@ -131,16 +129,16 @@ export class MenuService {
   ): MenuWithDiscountType[] {
     return menus.map((menu) => {
       const menuDiscounts = menu.discounts;
+      const { discounts, ...menuWithoutDiscounts } = menu;
 
       if (menuDiscounts.length > 0) {
         const highestDiscount = menuDiscounts.reduce((prev, current) =>
           prev.percentage > current.percentage ? prev : current,
         );
-        const { discounts, ...menuWithoutDiscounts } = menu;
         return { ...menuWithoutDiscounts, discount: highestDiscount };
       }
 
-      return menu;
+      return menuWithoutDiscounts;
     });
   }
 }

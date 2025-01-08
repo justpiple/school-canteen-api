@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Patch,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { MenuService } from "./menu.service";
@@ -14,17 +15,18 @@ import { CreateMenuDto } from "./dto/createMenu.dto";
 import { UpdateMenuDto } from "./dto/updateMenu.dto";
 import { AuthGuard } from "../auth/auth.guard";
 import { Roles } from "../auth/roles.decorator";
-import { UseAuth } from "../auth/auth.decorator";
+import { AllowAnon, UseAuth } from "../auth/auth.decorator";
 import { UserWithoutPasswordType } from "../users/users.types";
+import { Role } from "@prisma/client";
 
-@ApiTags("Menus")
-@Controller("menus")
+@ApiTags("Menu")
+@Controller("menu")
 @UseGuards(AuthGuard)
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @Post()
-  @Roles("SUPERADMIN", "ADMIN_STAND")
+  @Roles(Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Create a new menu",
@@ -43,7 +45,8 @@ export class MenuController {
     summary: "Get all menus for a specific stand",
     description: "Fetch all menus belonging to a specific stand.",
   })
-  async findAll(@Param("standId") standId: number) {
+  @AllowAnon()
+  async findAll(@Param("standId", ParseIntPipe) standId: number) {
     return this.menuService.findAll(standId);
   }
 
@@ -53,15 +56,13 @@ export class MenuController {
     description:
       "Fetch a specific menu by its ID, including active discounts if any.",
   })
-  async findOne(
-    @Param("id") id: number,
-    @UseAuth() user: UserWithoutPasswordType,
-  ) {
-    return this.menuService.findOne(id, user.id);
+  @AllowAnon()
+  async findOne(@Param("id", ParseIntPipe) id: number) {
+    return this.menuService.findOne(id);
   }
 
   @Patch(":id")
-  @Roles("SUPERADMIN", "ADMIN_STAND")
+  @Roles(Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Update a menu",
@@ -69,7 +70,7 @@ export class MenuController {
       "SUPERADMIN can update any menu. ADMIN_STAND can only update menus for their own stand.",
   })
   async update(
-    @Param("id") id: number,
+    @Param("id", ParseIntPipe) id: number,
     @Body() updateMenuDto: UpdateMenuDto,
     @UseAuth() user: UserWithoutPasswordType,
   ) {
@@ -77,7 +78,7 @@ export class MenuController {
   }
 
   @Delete(":id")
-  @Roles("SUPERADMIN", "ADMIN_STAND")
+  @Roles(Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Delete a menu",
@@ -85,7 +86,7 @@ export class MenuController {
       "SUPERADMIN can delete any menu. ADMIN_STAND can only delete menus for their own stand.",
   })
   async remove(
-    @Param("id") id: number,
+    @Param("id", ParseIntPipe) id: number,
     @UseAuth() user: UserWithoutPasswordType,
   ) {
     return this.menuService.remove(id, user.id);
