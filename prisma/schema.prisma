@@ -51,10 +51,9 @@ model Menu {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   orders      OrderItem[]
-  Stand       Stand?      @relation(fields: [standId], references: [id])
-  standId     Int?
-  discount    Discount?   @relation(fields: [discountId], references: [id])
-  discountId  Int?
+  stand       Stand       @relation(fields: [standId], references: [id], onDelete: Cascade)
+  standId     Int
+  discounts   Discount[]
 }
 
 model Discount {

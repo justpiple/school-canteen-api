@@ -20,6 +20,7 @@ import { Roles } from "../auth/roles.decorator";
 import { UserWithoutPasswordType } from "../users/users.types";
 import { PrismaService } from "src/lib/prisma/prisma.service";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Role } from "@prisma/client";
 
 @ApiTags("Discounts")
 @Controller("discounts")
@@ -31,7 +32,7 @@ export class DiscountsController {
   ) {}
 
   @Post()
-  @Roles("SUPERADMIN", "ADMIN_STAND")
+  @Roles(Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Create a new discount",
@@ -42,7 +43,7 @@ export class DiscountsController {
     @Body() createDiscountDto: CreateDiscountDto,
     @UseAuth() user: UserWithoutPasswordType,
   ) {
-    if (user.role !== "SUPERADMIN") {
+    if (user.role !== Role.SUPERADMIN) {
       const userStand = await this.prisma.stand.findUnique({
         where: { ownerId: user.id },
       });
@@ -65,7 +66,7 @@ export class DiscountsController {
       "SUPERADMIN can see all discounts. ADMIN_STAND can see discounts for their own stand.",
   })
   async findAll(@UseAuth() user: UserWithoutPasswordType) {
-    const isSuperAdmin = user.role === "SUPERADMIN";
+    const isSuperAdmin = user.role === Role.SUPERADMIN;
     if (isSuperAdmin) {
       return this.discountsService.findAll();
     } else {
@@ -93,7 +94,7 @@ export class DiscountsController {
       where: { ownerId: user.id },
     });
 
-    if (user.role !== "SUPERADMIN" && discount.standId !== userStand?.id) {
+    if (user.role !== Role.SUPERADMIN && discount.standId !== userStand?.id) {
       throw new ForbiddenException("You do not have access to this discount.");
     }
 
@@ -101,7 +102,7 @@ export class DiscountsController {
   }
 
   @Patch(":id")
-  @Roles("SUPERADMIN", "ADMIN_STAND")
+  @Roles(Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Update a discount",
@@ -123,7 +124,7 @@ export class DiscountsController {
       where: { ownerId: user.id },
     });
 
-    if (user.role !== "SUPERADMIN" && discount.standId !== userStand?.id) {
+    if (user.role !== Role.SUPERADMIN && discount.standId !== userStand?.id) {
       throw new ForbiddenException(
         "You do not have access to update this discount.",
       );
@@ -133,7 +134,7 @@ export class DiscountsController {
   }
 
   @Delete(":id")
-  @Roles("SUPERADMIN", "ADMIN_STAND")
+  @Roles(Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Delete a discount",
@@ -154,7 +155,7 @@ export class DiscountsController {
       where: { ownerId: user.id },
     });
 
-    if (user.role !== "SUPERADMIN" && discount.standId !== userStand?.id) {
+    if (user.role !== Role.SUPERADMIN && discount.standId !== userStand?.id) {
       throw new ForbiddenException(
         "You do not have access to delete this discount.",
       );

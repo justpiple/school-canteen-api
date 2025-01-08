@@ -18,6 +18,7 @@ import { UserWithoutPasswordType } from "../users/users.types";
 import { PrismaService } from "src/lib/prisma/prisma.service";
 import { Roles } from "../auth/roles.decorator";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Role } from "@prisma/client";
 
 @ApiTags("Stands")
 @Controller("stands")
@@ -29,7 +30,7 @@ export class StandsController {
   ) {}
 
   @Post()
-  @Roles("ADMIN_STAND")
+  @Roles(Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Create a new stand",
@@ -79,7 +80,7 @@ export class StandsController {
   }
 
   @Patch(":id")
-  @Roles("SUPERADMIN")
+  @Roles(Role.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Update a stand by ID",
@@ -95,7 +96,7 @@ export class StandsController {
   }
 
   @Delete(":id")
-  @Roles("SUPERADMIN")
+  @Roles(Role.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Delete a stand by ID",
@@ -109,7 +110,7 @@ export class StandsController {
   }
 
   @Patch("me")
-  @Roles("ADMIN_STAND")
+  @Roles(Role.ADMIN_STAND)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Update own stand",

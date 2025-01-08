@@ -6,6 +6,7 @@ import { AuthModule } from "./core/auth/auth.module";
 import { UsersModule } from "./core/users/users.module";
 import { StandsModule } from "./core/stands/stands.module";
 import { DiscountsModule } from "./core/discounts/discounts.module";
+import { MenuModule } from "./core/menu/menu.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DiscountsModule } from "./core/discounts/discounts.module";
     UsersModule,
     StandsModule,
     DiscountsModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [
