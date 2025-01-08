@@ -1,0 +1,107 @@
+// Prisma schema untuk aplikasi Kantin Sekolah
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(uuid())
+  username String   @unique
+  password String
+  role     Role
+  student  Student?
+  stand    Stand?
+  orders   Order[]
+}
+
+model Student {
+  id      String  @id @default(uuid())
+  name    String
+  address String
+  phone   String
+  photo   String?
+  userId  String  @unique
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Stand {
+  id        Int        @id @default(autoincrement())
+  standName String
+  ownerName String
+  phone     String
+  ownerId   String     @unique
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  menus     Menu[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Discount  Discount[]
+}
+
+model Menu {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  type        MenuType
+  photo       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orders      OrderItem[]
+  Stand       Stand?      @relation(fields: [standId], references: [id])
+  standId     Int?
+  discount    Discount?   @relation(fields: [discountId], references: [id])
+  discountId  Int?
+}
+
+model Discount {
+  id         Int      @id @default(autoincrement())
+  standId    Int
+  stand      Stand    @relation(fields: [standId], references: [id], onDelete: Cascade)
+  name       String
+  percentage Float
+  startDate  DateTime
+  endDate    DateTime
+  menus      Menu[]
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  status    OrderStatus
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id       Int   @id @default(autoincrement())
+  orderId  Int
+  menuId   Int
+  quantity Int
+  price    Float
+  menu     Menu  @relation(fields: [menuId], references: [id])
+  order    Order @relation(fields: [orderId], references: [id])
+}
+
+enum Role {
+  STUDENT
+  ADMIN_STAND
+  SUPERADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum MenuType {
+  FOOD
+  DRINK
+}
