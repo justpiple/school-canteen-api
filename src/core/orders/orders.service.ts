@@ -6,7 +6,7 @@ import {
 import { PrismaService } from "src/lib/prisma/prisma.service";
 import { CreateOrderDto } from "./dto/createOrder.dto";
 import { UpdateOrderDto } from "./dto/updateOrder.dto";
-import { Role } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 import * as PDFDocument from "pdfkit";
 import { Response } from "express";
 import {
@@ -93,10 +93,30 @@ export class OrderService {
     });
   }
 
-  async findAll(userId: string) {
+  async findAll(userId: string, month?: number, year?: number) {
+    const whereClause: Prisma.OrderWhereInput = {
+      OR: [{ userId }, { stand: { ownerId: userId } }],
+    };
+
+    const startDate = new Date(year, month === 0 ? month - 1 : 1, 1);
+    const endDate = new Date(
+      year,
+      month === 0 ? 12 : month,
+      0,
+      23,
+      59,
+      59,
+      999,
+    );
+
+    whereClause.createdAt = {
+      gte: startDate,
+      lte: endDate,
+    };
+
     return this.prisma.order.findMany({
-      where: { OR: [{ userId }, { stand: { ownerId: userId } }] },
-      include: { items: true },
+      where: whereClause,
+      include: { items: true, stand: { select: { standName: true } } },
     });
   }
 

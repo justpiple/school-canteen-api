@@ -11,10 +11,14 @@ import {
   Res,
   NotFoundException,
   ForbiddenException,
+  Query,
+  BadRequestException,
+  DefaultValuePipe,
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from "@nestjs/swagger";
@@ -91,6 +95,9 @@ export class OrderController {
               { menuId: 1, quantity: 2, price: 200 },
               { menuId: 2, quantity: 1, price: 100 },
             ],
+            stand: {
+              standName: "Yoyok's Stand",
+            },
           },
         ],
       },
@@ -100,8 +107,28 @@ export class OrderController {
   @ApiBearerAuth()
   @Roles(Role.STUDENT, Role.ADMIN_STAND)
   @ApiOperation({ summary: "Get all orders of the students or stand" })
-  async findAll(@UseAuth() user: UserWithoutPasswordType) {
-    return this.orderService.findAll(user.id);
+  @ApiQuery({
+    name: "month",
+    required: false,
+    type: Number,
+    description: "Month to filter orders (1-12)",
+  })
+  @ApiQuery({
+    name: "year",
+    required: false,
+    type: Number,
+    description: "Year to filter orders (default is current year)",
+  })
+  async findAll(
+    @UseAuth() user: UserWithoutPasswordType,
+    @Query("month", new DefaultValuePipe(0), ParseIntPipe) month?: number,
+    @Query("year", new DefaultValuePipe(new Date().getFullYear()), ParseIntPipe)
+    year?: number,
+  ) {
+    if (month > 12 || month < 0) {
+      throw new BadRequestException("Invalid month query.");
+    }
+    return this.orderService.findAll(user.id, month, year);
   }
 
   @ApiResponse({
