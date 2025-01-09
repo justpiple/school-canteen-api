@@ -17,7 +17,12 @@ import { AuthGuard } from "../auth/auth.guard";
 import { UserWithoutPasswordType } from "../users/users.types";
 import { PrismaService } from "src/lib/prisma/prisma.service";
 import { Roles } from "../auth/roles.decorator";
-import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from "@nestjs/swagger";
 import { Role } from "@prisma/client";
 
 @ApiTags("Stands")
@@ -41,6 +46,54 @@ export class StandsController {
     @UseAuth() user: UserWithoutPasswordType,
   ) {
     return this.standsService.create(createStandDto, user.id);
+  }
+
+  @Get("stats")
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN_STAND)
+  @ApiOperation({ summary: "Get statistics for the stand" })
+  @ApiResponse({
+    status: 200,
+    description: "Statistics retrieved successfully.",
+    example: {
+      status: "success",
+      message: "Statistics retrieved successfully",
+      statusCode: 200,
+      data: {
+        monthlyIncome: [
+          { month: "January", year: 2024, total: 1500.0 },
+          { month: "February", year: 2024, total: 2000.0 },
+          { month: "March", year: 2024, total: 1800.0 },
+          { month: "April", year: 2024, total: 2200.0 },
+          { month: "May", year: 2024, total: 2500.0 },
+          { month: "June", year: 2024, total: 3000.0 },
+          { month: "July", year: 2024, total: 2700.0 },
+          { month: "August", year: 2024, total: 3200.0 },
+          { month: "September", year: 2024, total: 2900.0 },
+          { month: "October", year: 2024, total: 3100.0 },
+          { month: "November", year: 2024, total: 3300.0 },
+          { month: "December", year: 2024, total: 3500.0 },
+        ],
+        totalOrders: 120,
+        averageIncomePerOrder: 250.0,
+        totalItemsSold: 500,
+        topSellingMenus: [
+          {
+            menuId: 1,
+            menuName: "Nasi Goreng",
+            totalSold: 100,
+            totalIncome: 1000.0,
+          },
+        ],
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: "Stand not found.",
+  })
+  async getStats(@UseAuth() user: UserWithoutPasswordType) {
+    return this.standsService.getStandStats(user.id);
   }
 
   @Get()
