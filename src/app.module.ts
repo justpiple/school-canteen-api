@@ -7,6 +7,7 @@ import { UsersModule } from "./core/users/users.module";
 import { StandsModule } from "./core/stands/stands.module";
 import { DiscountsModule } from "./core/discounts/discounts.module";
 import { MenuModule } from "./core/menu/menu.module";
+import { StudentModule } from "./core/students/students.module";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MenuModule } from "./core/menu/menu.module";
     StandsModule,
     DiscountsModule,
     MenuModule,
+    StudentModule,
   ],
   controllers: [AppController],
   providers: [
