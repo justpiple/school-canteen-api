@@ -9,6 +9,8 @@ import {
   UseGuards,
   ParseIntPipe,
   Res,
+  NotFoundException,
+  ForbiddenException,
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
@@ -131,6 +133,66 @@ export class OrderController {
     @UseAuth() user: UserWithoutPasswordType,
   ) {
     return this.orderService.update(id, updateOrderDto, user.id);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: "Success get order data.",
+    schema: {
+      example: {
+        status: "success",
+        message: "Operation successful",
+        statusCode: 200,
+        data: {
+          id: 1,
+          userId: "aa62a3a0-1be8-4c16-89cb-602705612cf1",
+          standId: 1,
+          status: "COOKING",
+          createdAt: "2025-01-09T00:00:00.000Z",
+          updatedAt: "2025-01-09T00:00:00.000Z",
+          items: [
+            {
+              id: 1,
+              orderId: 1,
+              menuId: 1,
+              quantity: 5,
+              price: 30000,
+              menu: {
+                name: "Nasi Tempe",
+              },
+            },
+          ],
+          user: {
+            student: {
+              name: "Student",
+            },
+          },
+          stand: {
+            standName: "Yoyok's Stand",
+          },
+        },
+      },
+    },
+  })
+  @Get(":id")
+  @Roles(Role.ADMIN_STAND, Role.STUDENT)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Find an order details by ID" })
+  async findOne(
+    @Param("id", ParseIntPipe) id: number,
+    @UseAuth() user: UserWithoutPasswordType,
+  ) {
+    const order = await this.orderService.findOrderById(id);
+
+    if (!order) {
+      throw new NotFoundException(`Order with ID '${id}' not found.`);
+    }
+
+    if (order.userId !== user.id) {
+      throw new ForbiddenException("This is not your order.");
+    }
+
+    return order;
   }
 
   @ApiResponse({
