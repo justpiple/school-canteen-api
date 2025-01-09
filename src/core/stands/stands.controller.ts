@@ -133,6 +133,27 @@ export class StandsController {
     return this.standsService.findOne(id);
   }
 
+  @Patch("me")
+  @Roles(Role.ADMIN_STAND)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: "Update own stand",
+    description:
+      "Allows an ADMIN_STAND to update their own stand's information.",
+  })
+  async updateOwnStand(
+    @Body() updateStandDto: UpdateStandDto,
+    @UseAuth() user: UserWithoutPasswordType,
+  ) {
+    const stand = await this.prisma.stand.findUnique({
+      where: { ownerId: user.id },
+    });
+    if (!stand) {
+      throw new NotFoundException("You do not have a stand.");
+    }
+    return this.standsService.update(stand.id, updateStandDto, user.id);
+  }
+
   @Patch(":id")
   @Roles(Role.SUPERADMIN)
   @ApiBearerAuth()
@@ -161,26 +182,5 @@ export class StandsController {
     @UseAuth() user: UserWithoutPasswordType,
   ) {
     return this.standsService.remove(id, user.id);
-  }
-
-  @Patch("me")
-  @Roles(Role.ADMIN_STAND)
-  @ApiBearerAuth()
-  @ApiOperation({
-    summary: "Update own stand",
-    description:
-      "Allows an ADMIN_STAND to update their own stand's information.",
-  })
-  async updateOwnStand(
-    @Body() updateStandDto: UpdateStandDto,
-    @UseAuth() user: UserWithoutPasswordType,
-  ) {
-    const stand = await this.prisma.stand.findUnique({
-      where: { ownerId: user.id },
-    });
-    if (!stand) {
-      throw new NotFoundException("You do not have a stand.");
-    }
-    return this.standsService.update(stand.id, updateStandDto, user.id);
   }
 }
