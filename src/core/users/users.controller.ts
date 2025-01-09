@@ -27,18 +27,6 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @HttpCode(HttpStatus.OK)
-  @Get(":id")
-  @ApiBearerAuth()
-  @Roles(Role.SUPERADMIN)
-  @ApiOperation({ summary: "Get a user by id", tags: ["users"] })
-  async findById(@Param("id") id: string) {
-    const user = await this.usersService.getUser({ id }, UserWithoutPassword);
-    if (!user) throw new NotFoundException(`No user found with id: ${id}`);
-
-    return user;
-  }
-
-  @HttpCode(HttpStatus.OK)
   @Patch("me")
   @ApiBearerAuth()
   @Roles(Role.SUPERADMIN, Role.ADMIN_STAND, Role.STUDENT)
@@ -60,10 +48,22 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   @Get("me")
   @ApiBearerAuth()
-  @Roles(Role.SUPERADMIN, Role.ADMIN_STAND, Role.STUDENT)
+  @Roles(Role.STUDENT, Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiOperation({ summary: "Get current user", tags: ["users"] })
   getCurrentUser(@UseAuth() user: UserWithoutPasswordType) {
     return this.usersService.getUser({ id: user.id });
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get(":id")
+  @ApiBearerAuth()
+  @Roles(Role.SUPERADMIN)
+  @ApiOperation({ summary: "Get a user by id", tags: ["users"] })
+  async findById(@Param("id") id: string) {
+    const user = await this.usersService.getUser({ id }, UserWithoutPassword);
+    if (!user) throw new NotFoundException(`No user found with id: ${id}`);
+
+    return user;
   }
 
   @HttpCode(HttpStatus.OK)
