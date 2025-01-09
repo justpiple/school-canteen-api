@@ -110,6 +110,7 @@ export class StudentController {
       updateStudentProfileDto.photo = photoUrl;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { userId, ...updateStudentProfileDtoWithoutUserId } =
       updateStudentProfileDto;
     return this.studentService.update(
