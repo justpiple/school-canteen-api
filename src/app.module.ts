@@ -8,6 +8,7 @@ import { StandsModule } from "./core/stands/stands.module";
 import { DiscountsModule } from "./core/discounts/discounts.module";
 import { MenuModule } from "./core/menu/menu.module";
 import { StudentModule } from "./core/students/students.module";
+import { OrderModule } from "./core/orders/orders.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { StudentModule } from "./core/students/students.module";
     DiscountsModule,
     MenuModule,
     StudentModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [

@@ -39,6 +39,7 @@ model Stand {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   Discount  Discount[]
+  Order     Order[]
 }
 
 model Menu {
@@ -71,7 +72,9 @@ model Order {
   id        Int         @id @default(autoincrement())
   userId    String
   user      User        @relation(fields: [userId], references: [id])
-  status    OrderStatus
+  standId   Int
+  stand     Stand       @relation(fields: [standId], references: [id])
+  status    OrderStatus @default(PENDING)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   items     OrderItem[]
@@ -95,9 +98,9 @@ enum Role {
 
 enum OrderStatus {
   PENDING
-  CONFIRMED
+  COOKING
+  ON_DELIVERY
   COMPLETED
-  CANCELLED
 }
 
 enum MenuType {
