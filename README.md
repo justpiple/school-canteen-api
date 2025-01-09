@@ -1,8 +1,8 @@
-# School Canteen Management System
+# School Canteen Ordering System (API)
 
 ## Overview
 
-The School Canteen Management System is a web application designed to facilitate the management of school canteens. It allows administrators, stand owners, and students to interact with the system efficiently. The application provides features for managing users, stands, menus, orders, and statistics.
+The School Canteen Ordering System is a web application designed to facilitate the management of school canteens. It allows administrators, stand owners, and students to interact with the system efficiently. The application provides features for managing users, stands, menus, orders, and statistics.
 
 ## Features
 
