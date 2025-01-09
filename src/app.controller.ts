@@ -11,7 +11,7 @@ import { AllowAnon } from "./core/auth/auth.decorator";
 @Controller({ version: VERSION_NEUTRAL })
 export class AppController {
   @HttpCode(HttpStatus.OK)
-  @Get("/status")
+  @Get("/")
   @ApiExcludeEndpoint()
   @AllowAnon()
   async root() {
