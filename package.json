@@ -2,9 +2,9 @@
   "name": "school-canteen-api",
   "version": "1.0.0",
   "description": "",
-  "author": "",
+  "author": "Kusindra Aji R.",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
