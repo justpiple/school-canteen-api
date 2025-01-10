@@ -72,7 +72,7 @@ export class OrderController {
     @Body() createOrderDto: CreateOrderDto,
     @UseAuth() user: UserWithoutPasswordType,
   ) {
-    return this.orderService.create(createOrderDto, user.id); // Menggunakan user.id
+    return await this.orderService.create(createOrderDto, user.id); // Menggunakan user.id
   }
 
   @ApiResponse({
@@ -159,7 +159,7 @@ export class OrderController {
     @Body() updateOrderDto: UpdateOrderDto,
     @UseAuth() user: UserWithoutPasswordType,
   ) {
-    return this.orderService.update(id, updateOrderDto, user.id);
+    return await this.orderService.update(id, updateOrderDto, user.id);
   }
 
   @ApiResponse({
@@ -249,7 +249,7 @@ export class OrderController {
     @Param("id", ParseIntPipe) id: number,
     @UseAuth() user: UserWithoutPasswordType,
   ) {
-    return this.orderService.remove(id, user.id);
+    return await this.orderService.remove(id, user.id);
   }
 
   @Get(":id/receipt")

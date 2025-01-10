@@ -100,7 +100,7 @@ export class OrderService {
       OR: [{ userId }, { stand: { ownerId: userId } }],
     };
 
-    const startDate = new Date(year, month === 0 ? month - 1 : 1, 1);
+    const startDate = new Date(year, month === 0 ? 0 : month - 1, 1);
     const endDate = new Date(
       year,
       month === 0 ? 12 : month,
@@ -118,7 +118,11 @@ export class OrderService {
 
     return this.prisma.order.findMany({
       where: whereClause,
-      include: { items: true, stand: { select: { standName: true } } },
+      include: {
+        items: true,
+        stand: { select: { standName: true } },
+        user: { select: { student: { select: { name: true } } } },
+      },
     });
   }
 
