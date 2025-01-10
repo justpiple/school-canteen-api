@@ -70,8 +70,8 @@ model Discount {
 
 model Order {
   id        Int         @id @default(autoincrement())
-  userId    String
-  user      User        @relation(fields: [userId], references: [id])
+  userId    String?
+  user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   standId   Int
   stand     Stand       @relation(fields: [standId], references: [id])
   status    OrderStatus @default(PENDING)
