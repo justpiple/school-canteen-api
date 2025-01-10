@@ -35,7 +35,8 @@ export class UsersController {
     @UseAuth() user: UserWithoutPasswordType,
     @Body() data: UpdateUserDto,
   ) {
-    const userUpdateData: Prisma.UserUpdateInput = { ...data };
+    // eslint-disable-next-line  @typescript-eslint/no-unuse
+    const { role, ...userUpdateData }: Prisma.UserUpdateInput = { ...data };
 
     if (data.password.trim()) {
       const encryptedPassword = await encryptData(data.password);
