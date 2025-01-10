@@ -9,12 +9,15 @@ export class DiscountsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createDiscountDto: CreateDiscountDto): Promise<Discount> {
-    const { standId, ...discountData } = createDiscountDto;
+    const { menus, standId, ...discountData } = createDiscountDto;
 
     return this.prisma.discount.create({
       data: {
         ...discountData,
         stand: { connect: { id: standId } },
+        menus: {
+          connect: menus?.map((item) => ({ id: item })),
+        },
       },
     });
   }
@@ -37,9 +40,17 @@ export class DiscountsService {
   }
 
   async update(id: number, updateDiscountDto: UpdateDiscountDto) {
+    const { menus, ...updateDiscount } = updateDiscountDto;
+
     return this.prisma.discount.update({
       where: { id },
-      data: updateDiscountDto,
+      data: {
+        ...updateDiscount,
+        menus: {
+          deleteMany: menus ? {} : undefined,
+          connect: menus?.map((item) => ({ id: item })),
+        },
+      },
     });
   }
 

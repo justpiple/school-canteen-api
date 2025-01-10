@@ -5,6 +5,7 @@ import {
   Min,
   Max,
   IsOptional,
+  IsArray,
 } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
@@ -49,4 +50,9 @@ export class CreateDiscountDto {
   @IsNumber()
   @IsOptional()
   standId?: number;
+
+  @ApiProperty({ description: "Menu discounted", required: false })
+  @IsOptional()
+  @IsArray()
+  menus?: number[];
 }

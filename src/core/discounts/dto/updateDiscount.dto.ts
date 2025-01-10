@@ -4,6 +4,7 @@ import {
   IsPositive,
   IsDateString,
   IsOptional,
+  IsArray,
 } from "class-validator";
 
 export class UpdateDiscountDto {
@@ -29,4 +30,9 @@ export class UpdateDiscountDto {
   @IsDateString()
   @IsOptional()
   endDate?: string;
+
+  @ApiProperty({ description: "Menu discounted", required: false })
+  @IsOptional()
+  @IsArray()
+  menus?: number[];
 }
