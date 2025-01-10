@@ -17,7 +17,7 @@ export class StandsService {
   }
 
   async findAll() {
-    return this.prisma.stand.findMany();
+    return this.prisma.stand.findMany({ where: { ownerId: { not: null } } });
   }
 
   async findOne(id: number) {

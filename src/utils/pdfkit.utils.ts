@@ -90,7 +90,7 @@ export function generateItemsTable(
     doc
       .font("Helvetica")
       .fontSize(10)
-      .text(item.menu.name, 50, position)
+      .text(item.menuName, 50, position)
       .text(item.quantity.toString(), 200, position, {
         width: 90,
         align: "right",

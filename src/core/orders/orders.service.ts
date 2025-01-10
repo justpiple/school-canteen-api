@@ -53,6 +53,7 @@ export class OrderService {
         }
 
         return {
+          name: menu.name,
           menuId: item.menuId,
           quantity: item.quantity,
           price: price - discountAmount,
@@ -71,6 +72,7 @@ export class OrderService {
         standId: createOrderDto.standId,
         items: {
           create: itemsWithPrices.map((item) => ({
+            menuName: item.name,
             menuId: item.menuId,
             quantity: item.quantity,
             price: item.price,
