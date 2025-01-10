@@ -37,11 +37,12 @@ export class UsersController {
   ) {
     const userUpdateData: Prisma.UserUpdateInput = { ...data };
 
-    if (data.password) {
+    if (data.password.trim()) {
       const encryptedPassword = await encryptData(data.password);
       userUpdateData.password = encryptedPassword;
     }
 
+    // eslint-disable-next-line  @typescript-eslint/no-unuse
     const { password, ...userWithoutPassword } =
       await this.usersService.updateUser({ id: user.id }, data);
 
