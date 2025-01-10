@@ -42,7 +42,10 @@ export class UsersController {
       userUpdateData.password = encryptedPassword;
     }
 
-    return await this.usersService.updateUser({ id: user.id }, data);
+    const { password, ...userWithoutPassword } =
+      await this.usersService.updateUser({ id: user.id }, data);
+
+    return userWithoutPassword;
   }
 
   @HttpCode(HttpStatus.OK)
@@ -51,7 +54,7 @@ export class UsersController {
   @Roles(Role.STUDENT, Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiOperation({ summary: "Get current user", tags: ["users"] })
   getCurrentUser(@UseAuth() user: UserWithoutPasswordType) {
-    return this.usersService.getUser({ id: user.id });
+    return this.usersService.getUser({ id: user.id }, UserWithoutPassword);
   }
 
   @HttpCode(HttpStatus.OK)
