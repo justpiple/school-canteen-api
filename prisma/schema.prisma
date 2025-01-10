@@ -81,13 +81,14 @@ model Order {
 }
 
 model OrderItem {
-  id       Int   @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   orderId  Int
-  menuId   Int
+  menuId   Int?
+  menuName String
   quantity Int
   price    Float
-  menu     Menu  @relation(fields: [menuId], references: [id])
-  order    Order @relation(fields: [orderId], references: [id])
+  menu     Menu?  @relation(fields: [menuId], references: [id], onDelete: SetNull)
+  order    Order  @relation(fields: [orderId], references: [id])
 }
 
 enum Role {
