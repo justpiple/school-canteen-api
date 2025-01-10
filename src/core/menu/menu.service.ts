@@ -53,6 +53,15 @@ export class MenuService {
     return menu;
   }
 
+  async findAllByUser(userId: string) {
+    const menus = await this.prisma.menu.findMany({
+      where: {
+        stand: { ownerId: userId },
+      },
+    });
+
+    return menus;
+  }
   async findAll(standId: number) {
     const menus = await this.prisma.menu.findMany({
       where: {

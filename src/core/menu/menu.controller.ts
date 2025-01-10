@@ -60,13 +60,24 @@ export class MenuController {
     return this.menuService.create(createMenuDto, user.id);
   }
 
+  @Get()
+  @ApiOperation({
+    summary: "Get all menu for their own stand.",
+    description: "Fetch all menu",
+  })
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN_STAND)
+  async findAll(@UseAuth() user: UserWithoutPasswordType) {
+    return this.menuService.findAllByUser(user.id);
+  }
+
   @Get("stand/:standId")
   @ApiOperation({
     summary: "Get all menus for a specific stand",
     description: "Fetch all menus belonging to a specific stand.",
   })
   @AllowAnon()
-  async findAll(@Param("standId", ParseIntPipe) standId: number) {
+  async findAllByStand(@Param("standId", ParseIntPipe) standId: number) {
     return this.menuService.findAll(standId);
   }
 
