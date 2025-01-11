@@ -4,6 +4,8 @@
 
 The School Canteen Ordering System is a web application designed to facilitate the management of school canteens. It allows administrators, stand owners, and students to interact with the system efficiently. The application provides features for managing users, stands, menus, orders, and statistics.
 
+**Note**: The frontend application for this system is available in the [School Canteen Frontend Repository](https://github.com/justpiple/school-canteen-frontend).
+
 ## Features
 
 - User authentication and role management (Students, Stand Admins, Super Admins)
@@ -48,8 +50,8 @@ The School Canteen Ordering System is a web application designed to facilitate t
    cp env.example .env
    ```
 
-- Create a MySQL database for the project.
-- Update the `.env` file with your database connection string and other necessary environment variables
+   - Create a MySQL database for the project.
+   - Update the `.env` file with your database connection string and other necessary environment variables.
 
 4. **Run Prisma migrations**:
 
@@ -78,4 +80,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Thanks to the contributors and the open-source community for their support.
+Thanks to the contributors and the open-source community for their support.
