@@ -38,6 +38,7 @@ async function bootstrap() {
       in: "header",
     })
     .addServer("http://localhost:3000", "development local")
+    .addServer("https://canteen-api.benspace.xyz", "testing server")
     .build();
 
   const document = SwaggerModule.createDocument(app, documentConfig);
