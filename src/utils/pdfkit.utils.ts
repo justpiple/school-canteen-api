@@ -84,7 +84,7 @@ export function generateItemsTable(
   let total = 0;
   order.items.forEach((item, idx) => {
     const position = tableTop + 30 + idx * 20;
-    const itemTotal = item.price * item.quantity;
+    const itemTotal = item.price;
     total += itemTotal;
 
     doc
@@ -95,7 +95,7 @@ export function generateItemsTable(
         width: 90,
         align: "right",
       })
-      .text(formatCurrency(item.price), 300, position, {
+      .text(formatCurrency(itemTotal / item.quantity), 300, position, {
         width: 90,
         align: "right",
       })
@@ -118,7 +118,7 @@ export function generateItemsTable(
 export function generateFooter(doc: PDFKit.PDFDocument): void {
   doc
     .fontSize(10)
-    .text("Terima kasih telah berbelanja di Kantin Sekolah.", 50, 780, {
+    .text("Terima kasih telah berbelanja di Kantin Sekolah.", 50, doc.y + 30, {
       align: "center",
       width: 500,
     })
