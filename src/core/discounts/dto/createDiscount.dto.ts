@@ -6,6 +6,7 @@ import {
   Max,
   IsOptional,
   IsArray,
+  IsNotEmpty,
 } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
@@ -15,6 +16,7 @@ export class CreateDiscountDto {
     example: "Summer Sale",
   })
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty({
@@ -33,6 +35,7 @@ export class CreateDiscountDto {
     example: "2025-06-01T00:00:00Z",
   })
   @IsDateString()
+  @IsNotEmpty()
   startDate: string;
 
   @ApiProperty({
@@ -40,6 +43,7 @@ export class CreateDiscountDto {
     example: "2025-06-30T23:59:59Z",
   })
   @IsDateString()
+  @IsNotEmpty()
   endDate: string;
 
   @ApiPropertyOptional({

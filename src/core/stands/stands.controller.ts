@@ -101,6 +101,7 @@ export class StandsController {
     summary: "Get all stands",
     description: "Retrieves all stands from the database.",
   })
+  @AllowAnon()
   async findAll() {
     return this.standsService.findAll();
   }

@@ -1,20 +1,28 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, IsPhoneNumber } from "class-validator";
+import {
+  IsString,
+  IsOptional,
+  IsPhoneNumber,
+  IsNotEmpty,
+} from "class-validator";
 
 export class UpdateStudentDto {
   @ApiProperty({ description: "Name of the student", required: false })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   name?: string;
 
   @ApiProperty({ description: "Address of the student", required: false })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   address?: string;
 
   @ApiProperty({ description: "Phone number of the student", required: false })
   @IsOptional()
   @IsPhoneNumber()
+  @IsNotEmpty()
   phone?: string;
 
   @ApiProperty({
@@ -24,6 +32,7 @@ export class UpdateStudentDto {
     format: "binary",
   })
   @IsOptional()
+  @IsNotEmpty()
   photo?: string;
 
   @ApiProperty({
@@ -32,5 +41,6 @@ export class UpdateStudentDto {
   })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   userId?: string;
 }

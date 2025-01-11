@@ -1,5 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, IsEnum, IsInt } from "class-validator";
+import {
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+} from "class-validator";
 import { MenuType } from "@prisma/client";
 import { Type } from "class-transformer";
 
@@ -7,6 +13,7 @@ export class UpdateMenuDto {
   @ApiProperty({ description: "Name of the menu item", required: false })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   name?: string;
 
   @ApiProperty({ description: "Description of the menu item", required: false })

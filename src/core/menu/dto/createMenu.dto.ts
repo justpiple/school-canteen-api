@@ -1,11 +1,18 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, IsEnum, IsInt } from "class-validator";
+import {
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+} from "class-validator";
 import { MenuType } from "@prisma/client";
 import { Type } from "class-transformer";
 
 export class CreateMenuDto {
   @ApiProperty({ description: "Name of the menu item" })
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty({ description: "Description of the menu item", required: false })

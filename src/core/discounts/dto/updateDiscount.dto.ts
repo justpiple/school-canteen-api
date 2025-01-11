@@ -5,12 +5,14 @@ import {
   IsDateString,
   IsOptional,
   IsArray,
+  IsNotEmpty,
 } from "class-validator";
 
 export class UpdateDiscountDto {
   @ApiProperty({ description: "The name of the discount", required: false })
   @IsString()
   @IsOptional()
+  @IsNotEmpty()
   name?: string;
 
   @ApiProperty({ description: "The discount percentage", required: false })
