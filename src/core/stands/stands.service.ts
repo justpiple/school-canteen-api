@@ -116,10 +116,7 @@ export class StandsService {
           .reduce((acc, order) => {
             return (
               acc +
-              order.items.reduce(
-                (itemAcc, item) => itemAcc + item.price * item.quantity,
-                0,
-              )
+              order.items.reduce((itemAcc, item) => itemAcc + item.price, 0)
             );
           }, 0);
 
