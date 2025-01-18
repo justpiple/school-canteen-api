@@ -58,6 +58,9 @@ export class MenuService {
       where: {
         stand: { ownerId: userId },
       },
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
 
     return menus;
@@ -74,6 +77,9 @@ export class MenuService {
             endDate: { gte: new Date() },
           },
         },
+      },
+      orderBy: {
+        updatedAt: "desc",
       },
     });
 

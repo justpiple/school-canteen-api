@@ -123,6 +123,9 @@ export class OrderService {
         stand: { select: { standName: true } },
         user: { select: { student: { select: { name: true } } } },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }
 
