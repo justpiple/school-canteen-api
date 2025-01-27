@@ -24,10 +24,17 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { Role } from "@prisma/client";
+import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import {
+  CreateStandProfileResponseDto,
+  GetStandsResponseDto,
+} from "./dto/response.dto";
+import { BadRequestResponseDto } from "../students/dto/response.dto";
 
 @ApiTags("Stands")
 @Controller("stands")
 @UseGuards(AuthGuard)
+@ApiGlobalResponses()
 export class StandsController {
   constructor(
     private readonly standsService: StandsService,
@@ -40,6 +47,16 @@ export class StandsController {
   @ApiOperation({
     summary: "Create a new stand",
     description: "Allows an ADMIN_STAND to create a new stand.",
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad Request - Profile already exists",
+    type: BadRequestResponseDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: "The profile was created successfully",
+    type: CreateStandProfileResponseDto,
   })
   async create(
     @Body() createStandDto: CreateStandDto,
@@ -100,6 +117,11 @@ export class StandsController {
   @ApiOperation({
     summary: "Get all stands",
     description: "Retrieves all stands from the database.",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Stands retrieved successfully",
+    type: GetStandsResponseDto,
   })
   @AllowAnon()
   async findAll() {

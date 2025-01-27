@@ -31,10 +31,13 @@ import { UserWithoutPasswordType } from "../users/users.types";
 import { Role } from "@prisma/client";
 import { UseAuth } from "../auth/auth.decorator";
 import { Response } from "express";
+import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import { GetOrdersResponseDto } from "./dto/response.dto";
 
 @ApiTags("Orders")
 @Controller("orders")
 @UseGuards(AuthGuard)
+@ApiGlobalResponses()
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
@@ -72,37 +75,9 @@ export class OrderController {
     @Body() createOrderDto: CreateOrderDto,
     @UseAuth() user: UserWithoutPasswordType,
   ) {
-    return await this.orderService.create(createOrderDto, user.id); // Menggunakan user.id
+    return await this.orderService.create(createOrderDto, user.id);
   }
 
-  @ApiResponse({
-    status: 200,
-    description: "List of orders of the student or stand.",
-    schema: {
-      example: {
-        status: "success",
-        message: "Operation successful",
-        statusCode: 200,
-        data: [
-          {
-            id: 1,
-            userId: "aa62a3a0-1be8-4c16-89cb-602705612cf1",
-            standId: 1,
-            status: "PENDING",
-            createdAt: "2025-01-09T00:00:00.000Z",
-            updatedAt: "2025-01-09T00:00:00.000Z",
-            items: [
-              { menuId: 1, quantity: 2, price: 200 },
-              { menuId: 2, quantity: 1, price: 100 },
-            ],
-            stand: {
-              standName: "Yoyok's Stand",
-            },
-          },
-        ],
-      },
-    },
-  })
   @Get()
   @ApiBearerAuth()
   @Roles(Role.STUDENT, Role.ADMIN_STAND)
@@ -118,6 +93,11 @@ export class OrderController {
     required: false,
     type: Number,
     description: "Year to filter orders (default is current year)",
+  })
+  @ApiResponse({
+    status: 200,
+    description: "Orders retrieved successfully",
+    type: GetOrdersResponseDto,
   })
   async findAll(
     @UseAuth() user: UserWithoutPasswordType,
@@ -171,31 +151,54 @@ export class OrderController {
         message: "Operation successful",
         statusCode: 200,
         data: {
-          id: 1,
-          userId: "aa62a3a0-1be8-4c16-89cb-602705612cf1",
-          standId: 1,
-          status: "COOKING",
-          createdAt: "2025-01-09T00:00:00.000Z",
-          updatedAt: "2025-01-09T00:00:00.000Z",
+          id: 381,
+          userId: "0165f275-1936-49fe-9c38-a02bd918bb23",
+          standId: 75,
+          status: "PENDING",
+          createdAt: "2025-01-09T22:38:00.509Z",
+          updatedAt: "2025-01-09T22:38:00.509Z",
           items: [
             {
-              id: 1,
-              orderId: 1,
-              menuId: 1,
-              quantity: 5,
-              price: 30000,
+              id: 3066,
+              orderId: 381,
+              menuId: 190,
+              menuName: "Mie Goreng Jawa",
+              quantity: 1,
+              price: 13000,
               menu: {
-                name: "Nasi Tempe",
+                name: "Mie Goreng Jawa",
+              },
+            },
+            {
+              id: 3067,
+              orderId: 381,
+              menuId: 195,
+              menuName: "Es Jeruk",
+              quantity: 4,
+              price: 16000,
+              menu: {
+                name: "Es Jeruk",
+              },
+            },
+            {
+              id: 3068,
+              orderId: 381,
+              menuId: 192,
+              menuName: "Soto Ayam",
+              quantity: 1,
+              price: 14000,
+              menu: {
+                name: "Soto Ayam",
               },
             },
           ],
           user: {
             student: {
-              name: "Student",
+              name: "Mustika Pranowo",
             },
           },
           stand: {
-            standName: "Yoyok's Stand",
+            standName: "Kedai Barokah",
           },
         },
       },
@@ -258,7 +261,37 @@ export class OrderController {
   @ApiOperation({ summary: "Print receipt for the order" })
   @ApiResponse({
     status: 200,
-    description: "Receipt PDF for the order.",
+    description: "PDF receipt generated successfully",
+    content: {
+      "application/pdf": {
+        schema: {
+          type: "string",
+          format: "binary",
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
+    description: "Forbidden: The user does not own the order",
+    schema: {
+      example: {
+        message: "This is not your order.",
+        error: "Forbidden",
+        statusCode: 403,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: "Order not found",
+    schema: {
+      example: {
+        message: "Order not found",
+        error: "Not Found",
+        statusCode: 404,
+      },
+    },
   })
   async printReceipt(
     @Param("id", ParseIntPipe) id: number,

@@ -21,10 +21,12 @@ import { UserWithoutPasswordType } from "../users/users.types";
 import { PrismaService } from "src/lib/prisma/prisma.service";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Role } from "@prisma/client";
+import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
 
 @ApiTags("Discounts")
 @Controller("discounts")
 @UseGuards(AuthGuard)
+@ApiGlobalResponses()
 export class DiscountsController {
   constructor(
     private readonly discountsService: DiscountsService,

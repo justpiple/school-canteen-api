@@ -17,6 +17,7 @@ import {
   ApiOperation,
   ApiTags,
   ApiConsumes,
+  ApiResponse,
 } from "@nestjs/swagger";
 import { StudentService } from "./students.service";
 import { CreateStudentDto } from "./dto/createStudent.dto";
@@ -29,10 +30,18 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { CloudinaryService } from "../cloudinary/cloudinary.service";
 import { fileUploadOptions } from "src/config/fileUpload.config";
 import { UseAuth } from "../auth/auth.decorator";
+import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import {
+  BadRequestResponseDto,
+  CreateStudentProfileResponseDto,
+  GetStudentProfileResponseDto,
+  UpdateStudentProfileResponseDto,
+} from "./dto/response.dto";
 
 @ApiTags("Students")
 @Controller("students")
 @UseGuards(AuthGuard)
+@ApiGlobalResponses()
 export class StudentController {
   constructor(
     private readonly studentService: StudentService,
@@ -49,6 +58,16 @@ export class StudentController {
   })
   @ApiConsumes("multipart/form-data")
   @UseInterceptors(FileInterceptor("photo", fileUploadOptions))
+  @ApiResponse({
+    status: 400,
+    description: "Bad Request - Profile already exists",
+    type: BadRequestResponseDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: "The student profile was created successfully",
+    type: CreateStudentProfileResponseDto,
+  })
   async create(
     @Body() createStudentProfileDto: CreateStudentDto,
     @UseAuth() user: UserWithoutPasswordType,
@@ -87,6 +106,15 @@ export class StudentController {
     summary: "Get logged-in student's profile",
     description: "Student can view their own profile.",
   })
+  @ApiResponse({
+    status: 200,
+    description: "The operation was successful",
+    type: GetStudentProfileResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: "Student profile not found",
+  })
   async getProfile(@UseAuth() user: UserWithoutPasswordType) {
     return this.studentService.findOne(user.id);
   }
@@ -100,6 +128,15 @@ export class StudentController {
   })
   @ApiConsumes("multipart/form-data")
   @UseInterceptors(FileInterceptor("photo", fileUploadOptions))
+  @ApiResponse({
+    status: 200,
+    description: "The student profile was updated successfully",
+    type: UpdateStudentProfileResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: "Student profile not found",
+  })
   async updateOwnProfile(
     @Body() updateStudentProfileDto: UpdateStudentDto,
     @UseAuth() user: UserWithoutPasswordType,
@@ -123,7 +160,7 @@ export class StudentController {
   @Roles(Role.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Get student's profile by ID",
+    summary: "Get student's profile by ID (SuperAdmin)",
     description: "Superadmin can view a specific student's profile.",
   })
   async findOne(@Param("id") id: string) {
@@ -133,7 +170,7 @@ export class StudentController {
   @Patch("/:id")
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Update logged-in student's profile",
+    summary: "Update logged-in student's profile (SuperAdmin)",
     description: "Student can update their own profile.",
   })
   @ApiConsumes("multipart/form-data")
@@ -160,7 +197,7 @@ export class StudentController {
   @Roles(Role.SUPERADMIN)
   @ApiBearerAuth()
   @ApiOperation({
-    summary: "Delete a student's profile",
+    summary: "Delete a student's profile (SuperAdmin)",
     description: "Superadmin can delete a student's profile.",
   })
   async remove(@Param("id") id: string) {

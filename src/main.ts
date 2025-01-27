@@ -42,6 +42,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, documentConfig);
+
   SwaggerModule.setup("/docs", app, document, {
     swaggerOptions: { persistAuthorization: true },
   });

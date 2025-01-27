@@ -12,6 +12,20 @@ class UnauthorizedResponse {
   statusCode: number;
 }
 
+export class ForbiddenResponse {
+  @ApiProperty({
+    example: "You do not have permission to access this resource",
+    description: "Error message",
+  })
+  message: string;
+
+  @ApiProperty({ example: "Forbidden", description: "Error type" })
+  error: string;
+
+  @ApiProperty({ example: 403, description: "HTTP status code" })
+  statusCode: number;
+}
+
 class ServerErrorResponse {
   @ApiProperty({
     example: "Internal Server Error",
@@ -34,6 +48,11 @@ export function ApiGlobalResponses() {
       status: 500,
       description: "Internal Server Error",
       type: ServerErrorResponse,
+    }),
+    ApiResponse({
+      status: 403,
+      description: "Forbidden",
+      type: ForbiddenResponse,
     }),
   );
 }

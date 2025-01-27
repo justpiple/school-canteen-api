@@ -21,6 +21,10 @@ import { UserWithoutPassword } from "src/utils/selector.utils";
 import { AuthGuard } from "../auth/auth.guard";
 import { Roles } from "../auth/roles.decorator";
 import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import {
+  GetCurrentUserResponseDto,
+  UpdateUserResponseDto,
+} from "./dto/response.dto";
 
 @Controller("users")
 @UseGuards(AuthGuard)
@@ -33,6 +37,11 @@ export class UsersController {
   @ApiBearerAuth()
   @Roles(Role.SUPERADMIN, Role.ADMIN_STAND, Role.STUDENT)
   @ApiOperation({ summary: "Update current user", tags: ["users"] })
+  @ApiResponse({
+    status: 200,
+    description: "User updated successfully",
+    type: UpdateUserResponseDto,
+  })
   async updateCurrentUser(
     @UseAuth() user: UserWithoutPasswordType,
     @Body() data: UpdateUserDto,
@@ -57,6 +66,11 @@ export class UsersController {
   @ApiBearerAuth()
   @Roles(Role.STUDENT, Role.SUPERADMIN, Role.ADMIN_STAND)
   @ApiOperation({ summary: "Get current user", tags: ["users"] })
+  @ApiResponse({
+    status: 200,
+    description: "User details retrieved successfully",
+    type: GetCurrentUserResponseDto,
+  })
   getCurrentUser(@UseAuth() user: UserWithoutPasswordType) {
     return this.usersService.getUser({ id: user.id }, UserWithoutPassword);
   }
@@ -65,7 +79,7 @@ export class UsersController {
   @Get(":id")
   @ApiBearerAuth()
   @Roles(Role.SUPERADMIN)
-  @ApiOperation({ summary: "Get a user by id", tags: ["users"] })
+  @ApiOperation({ summary: "Get a user by id (SUPERADMIN)", tags: ["users"] })
   async findById(@Param("id") id: string) {
     const user = await this.usersService.getUser({ id }, UserWithoutPassword);
     if (!user) throw new NotFoundException(`No user found with id: ${id}`);
@@ -78,7 +92,7 @@ export class UsersController {
   @ApiBearerAuth()
   @Roles(Role.SUPERADMIN)
   @ApiOperation({
-    summary: "Delete current user by id",
+    summary: "Delete current user by id (SUPERADMIN)",
     tags: ["users"],
   })
   deleteCurrentUser(@Param("id") id: string) {

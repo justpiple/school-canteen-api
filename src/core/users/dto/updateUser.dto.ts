@@ -6,17 +6,27 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    description: "The new username for the user.",
+    example: "new_username",
+  })
   username?: string;
 
   @IsOptional()
   @IsString()
-  @ApiPropertyOptional()
   @IsNotEmpty()
+  @ApiPropertyOptional({
+    description: "The new password for the user.",
+    example: "new_password123",
+  })
   password?: string;
 
   @IsOptional()
   @IsEnum(Role)
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    description: "The new role for the user.",
+    enum: Role,
+    example: Role.STUDENT,
+  })
   role?: Role;
 }

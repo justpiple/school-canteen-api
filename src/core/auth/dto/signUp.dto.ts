@@ -10,12 +10,15 @@ import {
 export class SignUpDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ example: "user123" })
   username: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    example: "StrongPassword123!",
+    description: "Password of the user",
+  })
   @IsStrongPassword()
   password: string;
 
@@ -23,6 +26,11 @@ export class SignUpDto {
   @IsNotEmpty()
   @ApiProperty()
   @IsEnum(Role)
+  @ApiProperty({
+    example: "STUDENT",
+    description: "Role of the user",
+    enum: ["STUDENT", "ADMIN_STAND", "SUPERADMIN"],
+  })
   role: Role;
 }
 
