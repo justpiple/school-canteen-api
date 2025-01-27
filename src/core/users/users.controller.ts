@@ -10,7 +10,7 @@ import {
   Patch,
   UseGuards,
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Prisma, Role } from "@prisma/client";
 import { UserWithoutPasswordType } from "./users.types";
 import { UseAuth } from "../auth/auth.decorator";
@@ -20,9 +20,11 @@ import { encryptData } from "../../utils/encryption.utils";
 import { UserWithoutPassword } from "src/utils/selector.utils";
 import { AuthGuard } from "../auth/auth.guard";
 import { Roles } from "../auth/roles.decorator";
+import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
 
 @Controller("users")
 @UseGuards(AuthGuard)
+@ApiGlobalResponses()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -38,7 +40,7 @@ export class UsersController {
     // eslint-disable-next-line  @typescript-eslint/no-unuse
     const { role, ...userUpdateData }: Prisma.UserUpdateInput = { ...data };
 
-    if (data.password.trim()) {
+    if (data.password?.trim()) {
       const encryptedPassword = await encryptData(data.password);
       userUpdateData.password = encryptedPassword;
     }
