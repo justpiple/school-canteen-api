@@ -40,11 +40,6 @@ export class AuthController {
   @Post("signup")
   @ApiOperation({ summary: "User Sign Up", tags: ["auth"] })
   @ApiResponse({
-    status: 200,
-    description: "Signup successful",
-    type: LoginSuccessResponse,
-  })
-  @ApiResponse({
     status: 400,
     description: "Bad Request - Validation failed",
     type: BadRequestResponse,

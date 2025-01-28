@@ -10,6 +10,44 @@ export class BadRequestResponseDto {
   })
   message: string;
 }
+class StudentProfileDto {
+  @ApiProperty({
+    example: "6bc41d85-fc98-4f6d-ac56-332696a6d5bd",
+    description: "Unique identifier of the student profile",
+  })
+  id: string;
+
+  @ApiProperty({
+    example: "Ujang",
+    description: "Name of the student",
+  })
+  name: string;
+
+  @ApiProperty({
+    example: "Jl. Blablblblbl",
+    description: "Address of the student",
+  })
+  address: string;
+
+  @ApiProperty({
+    example: "+628888888888",
+    description: "Phone number of the student",
+  })
+  phone: string;
+
+  @ApiProperty({
+    example: "https://example.com/photo.jpg",
+    description: "Photo URL of the student (nullable)",
+    nullable: true,
+  })
+  photo: string | null;
+
+  @ApiProperty({
+    example: "ecead300-1ecb-4a6a-83c6-373f42a8ab1b",
+    description: "User ID associated with the profile",
+  })
+  userId: string;
+}
 
 export class CreateStudentProfileResponseDto {
   @ApiProperty({ example: "success" })
@@ -56,45 +94,6 @@ export class GetStudentProfileResponseDto {
     nullable: true,
   })
   data: StudentProfileDto | null;
-}
-
-class StudentProfileDto {
-  @ApiProperty({
-    example: "6bc41d85-fc98-4f6d-ac56-332696a6d5bd",
-    description: "Unique identifier of the student profile",
-  })
-  id: string;
-
-  @ApiProperty({
-    example: "Ujang",
-    description: "Name of the student",
-  })
-  name: string;
-
-  @ApiProperty({
-    example: "Jl. Blablblblbl",
-    description: "Address of the student",
-  })
-  address: string;
-
-  @ApiProperty({
-    example: "+628888888888",
-    description: "Phone number of the student",
-  })
-  phone: string;
-
-  @ApiProperty({
-    example: "https://example.com/photo.jpg",
-    description: "Photo URL of the student (nullable)",
-    nullable: true,
-  })
-  photo: string | null;
-
-  @ApiProperty({
-    example: "ecead300-1ecb-4a6a-83c6-373f42a8ab1b",
-    description: "User ID associated with the profile",
-  })
-  userId: string;
 }
 
 export class UpdateStudentProfileResponseDto {

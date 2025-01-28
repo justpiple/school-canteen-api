@@ -3,7 +3,7 @@ import { Role } from "@prisma/client";
 
 export class UnauthorizedResponse {
   @ApiProperty({
-    example: "Email or Password is incorrect",
+    example: "Username or Password is incorrect",
     description: "Error message",
   })
   message: string;
