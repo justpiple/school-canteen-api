@@ -3,6 +3,7 @@ import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer
 
 export const FILE_UPLOAD_CONFIG = {
   MAX_FILE_SIZE: 5 * 1024 * 1024,
+  ALLOWED_FILE_EXTENSION: ["PNG", "JPG", "GIF", "JPEG", "WEBP"],
 };
 
 export const fileUploadOptions: MulterOptions = {
@@ -10,8 +11,12 @@ export const fileUploadOptions: MulterOptions = {
     fileSize: FILE_UPLOAD_CONFIG.MAX_FILE_SIZE,
   },
   fileFilter: (req: any, file: Express.Multer.File, callback: any) => {
-    // Validate mime type
-    if (!file.mimetype.startsWith("image/")) {
+    if (
+      !file.mimetype.startsWith("image/") &&
+      !FILE_UPLOAD_CONFIG.ALLOWED_FILE_EXTENSION.includes(
+        file.originalname.split(".").pop().toUpperCase(),
+      )
+    ) {
       return callback(
         new HttpException(
           `File type not allowed. Allowed types: image`,
