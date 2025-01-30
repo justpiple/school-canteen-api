@@ -3,18 +3,18 @@ import {
   NotFoundException,
   ForbiddenException,
 } from "@nestjs/common";
-import { PrismaService } from "src/lib/prisma/prisma.service";
+import { PrismaService } from "../../lib/prisma/prisma.service";
 import { CreateOrderDto } from "./dto/createOrder.dto";
 import { UpdateOrderDto } from "./dto/updateOrder.dto";
 import { Prisma, Role } from "@prisma/client";
-import * as PDFDocument from "pdfkit";
+import PDFDocument from "pdfkit";
 import { Response } from "express";
 import {
   generateFooter,
   generateHeader,
   generateItemsTable,
   generateOrderDetails,
-} from "src/utils/pdfkit.utils";
+} from "../../utils/pdfkit.utils";
 
 @Injectable()
 export class OrderService {

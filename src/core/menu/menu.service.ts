@@ -3,7 +3,7 @@ import {
   NotFoundException,
   ForbiddenException,
 } from "@nestjs/common";
-import { PrismaService } from "src/lib/prisma/prisma.service";
+import { PrismaService } from "../../lib/prisma/prisma.service";
 import { CreateMenuDto } from "./dto/createMenu.dto";
 import { UpdateMenuDto } from "./dto/updateMenu.dto";
 import { MenuWithDiscountType, MenuWithDiscountsType } from "./menu.types";

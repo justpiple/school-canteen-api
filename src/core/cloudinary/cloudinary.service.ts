@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { UploadApiResponse } from "cloudinary";
-import cloudinary from "src/config/cloudinary.config";
+import cloudinary from "../../config/cloudinary.config";
 
 @Injectable()
 export class CloudinaryService {

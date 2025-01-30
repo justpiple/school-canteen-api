@@ -17,10 +17,10 @@ import { UseAuth } from "../auth/auth.decorator";
 import { UpdateUserDto } from "./dto/updateUser.dto";
 import { UsersService } from "./users.service";
 import { encryptData } from "../../utils/encryption.utils";
-import { UserWithoutPassword } from "src/utils/selector.utils";
+import { UserWithoutPassword } from "../../utils/selector.utils";
 import { AuthGuard } from "../auth/auth.guard";
 import { Roles } from "../auth/roles.decorator";
-import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import { ApiGlobalResponses } from "../../common/dto/global-response.dto";
 import {
   GetCurrentUserResponseDto,
   UpdateUserResponseDto,

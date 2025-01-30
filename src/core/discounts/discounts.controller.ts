@@ -18,10 +18,10 @@ import { UseAuth } from "../auth/auth.decorator";
 import { AuthGuard } from "../auth/auth.guard";
 import { Roles } from "../auth/roles.decorator";
 import { UserWithoutPasswordType } from "../users/users.types";
-import { PrismaService } from "src/lib/prisma/prisma.service";
+import { PrismaService } from "../../lib/prisma/prisma.service";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Role } from "@prisma/client";
-import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import { ApiGlobalResponses } from "../../common/dto/global-response.dto";
 
 @ApiTags("Discounts")
 @Controller("discounts")

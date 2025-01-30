@@ -11,12 +11,12 @@ type OrderWithDetails = Prisma.OrderGetPayload<{
 
 export function generateHeader(doc: PDFKit.PDFDocument): void {
   doc
-    .image(join(process.cwd(), "src/static/moklet.png"), 50, 40, {
+    .image(join(process.cwd(), "src/static/logo.png"), 50, 40, {
       width: 50,
     })
     .fillColor("#444444")
     .fontSize(20)
-    .text("KANTIN MOKLET", 110, 50)
+    .text("School Canteen", 110, 50)
     .fontSize(12)
     .text("Struk Pembelian", 110, 75)
     .moveDown()

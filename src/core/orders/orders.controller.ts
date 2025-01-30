@@ -31,7 +31,7 @@ import { UserWithoutPasswordType } from "../users/users.types";
 import { Role } from "@prisma/client";
 import { UseAuth } from "../auth/auth.decorator";
 import { Response } from "express";
-import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import { ApiGlobalResponses } from "../../common/dto/global-response.dto";
 import { GetOrdersResponseDto } from "./dto/response.dto";
 
 @ApiTags("Orders")

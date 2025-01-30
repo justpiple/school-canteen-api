@@ -27,8 +27,8 @@ import { UserWithoutPasswordType } from "../users/users.types";
 import { Role } from "@prisma/client";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CloudinaryService } from "../cloudinary/cloudinary.service";
-import { fileUploadOptions } from "src/config/fileUpload.config";
-import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import { fileUploadOptions } from "../../config/fileUpload.config";
+import { ApiGlobalResponses } from "../../common/dto/global-response.dto";
 
 @ApiTags("Menu")
 @Controller("menu")

@@ -15,7 +15,7 @@ import { UpdateStandDto } from "./dto/updateStand.dto";
 import { AllowAnon, UseAuth } from "../auth/auth.decorator";
 import { AuthGuard } from "../auth/auth.guard";
 import { UserWithoutPasswordType } from "../users/users.types";
-import { PrismaService } from "src/lib/prisma/prisma.service";
+import { PrismaService } from "../../lib/prisma/prisma.service";
 import { Roles } from "../auth/roles.decorator";
 import {
   ApiBearerAuth,
@@ -24,7 +24,7 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { Role } from "@prisma/client";
-import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import { ApiGlobalResponses } from "../../common/dto/global-response.dto";
 import {
   CreateStandProfileResponseDto,
   GetStandsResponseDto,

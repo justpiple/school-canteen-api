@@ -28,9 +28,9 @@ import { UserWithoutPasswordType } from "../users/users.types";
 import { Role } from "@prisma/client";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { CloudinaryService } from "../cloudinary/cloudinary.service";
-import { fileUploadOptions } from "src/config/fileUpload.config";
+import { fileUploadOptions } from "../../config/fileUpload.config";
 import { UseAuth } from "../auth/auth.decorator";
-import { ApiGlobalResponses } from "src/common/dto/global-response.dto";
+import { ApiGlobalResponses } from "../../common/dto/global-response.dto";
 import {
   BadRequestResponseDto,
   CreateStudentProfileResponseDto,

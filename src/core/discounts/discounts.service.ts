@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/lib/prisma/prisma.service";
+import { PrismaService } from "../../lib/prisma/prisma.service";
 import { CreateDiscountDto } from "./dto/createDiscount.dto";
 import { UpdateDiscountDto } from "./dto/updateDiscount.dto";
 import { Discount } from "@prisma/client";
