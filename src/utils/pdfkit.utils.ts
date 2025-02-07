@@ -18,7 +18,7 @@ export function generateHeader(doc: PDFKit.PDFDocument): void {
     .fontSize(20)
     .text("School Canteen", 110, 50)
     .fontSize(12)
-    .text("Struk Pembelian", 110, 75)
+    .text("Purchase Receipt", 110, 75)
     .moveDown()
     .strokeColor("#444444")
     .lineWidth(1)
@@ -31,15 +31,15 @@ export function generateOrderDetails(
   doc: PDFKit.PDFDocument,
   order: OrderWithDetails,
 ): void {
-  const orderDate = new Date(order.createdAt).toLocaleString("id-ID", {
+  const orderDate = new Date(order.createdAt).toLocaleString("en-US", {
     dateStyle: "full",
     timeStyle: "short",
   });
 
   const details = [
-    ["No. Pesanan", `: ${order.id}`],
-    ["Tanggal", `: ${orderDate}`],
-    ["Siswa", `: ${order.user.student.name}`],
+    ["Order No.", `: ${order.id}`],
+    ["Date", `: ${orderDate}`],
+    ["Student", `: ${order.user.student.name}`],
     ["Stand", `: ${order.stand.standName}`],
   ];
 
@@ -71,7 +71,7 @@ export function generateItemsTable(
     .fontSize(10)
     .text("Item", 50, tableTop)
     .text("Qty", 200, tableTop, { width: 90, align: "right" })
-    .text("Harga", 300, tableTop, { width: 90, align: "right" })
+    .text("Price", 300, tableTop, { width: 90, align: "right" })
     .text("Total", 400, tableTop, { width: 90, align: "right" });
 
   doc
@@ -108,7 +108,7 @@ export function generateItemsTable(
   const totalPosition = tableTop + 30 + order.items.length * 20;
   doc
     .font("Helvetica-Bold")
-    .text("Total Pembayaran", 300, totalPosition, { width: 90, align: "right" })
+    .text("Total Payment", 300, totalPosition, { width: 90, align: "right" })
     .text(formatCurrency(total), 400, totalPosition, {
       width: 90,
       align: "right",
@@ -118,12 +118,12 @@ export function generateItemsTable(
 export function generateFooter(doc: PDFKit.PDFDocument): void {
   doc
     .fontSize(10)
-    .text("Terima kasih telah berbelanja di Kantin Sekolah.", 50, doc.y + 30, {
+    .text("Thank you for shopping at the School Canteen.", 50, doc.y + 30, {
       align: "center",
       width: 500,
     })
     .moveDown(0.3)
-    .text("Simpan struk ini sebagai bukti pembelian.", {
+    .text("Please keep this receipt as proof of purchase.", {
       align: "center",
       width: 500,
     });
