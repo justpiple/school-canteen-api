@@ -7,7 +7,7 @@ import { PrismaService } from "../../lib/prisma/prisma.service";
 import { CreateOrderDto } from "./dto/createOrder.dto";
 import { UpdateOrderDto } from "./dto/updateOrder.dto";
 import { Prisma, Role } from "@prisma/client";
-import PDFDocument from "pdfkit";
+import * as PDFDocument from "pdfkit";
 import { Response } from "express";
 import {
   generateFooter,
