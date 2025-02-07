@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   UseInterceptors,
   UploadedFile,
+  BadRequestException,
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
@@ -58,6 +59,8 @@ export class MenuController {
     if (file) {
       const photoUrl = await this.cloudinaryService.uploadImage(file);
       createMenuDto.photo = photoUrl;
+    } else {
+      throw new BadRequestException("Photo is required");
     }
     return this.menuService.create(createMenuDto, user.id);
   }
