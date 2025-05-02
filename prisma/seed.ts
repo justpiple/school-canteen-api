@@ -1,6 +1,6 @@
 import { PrismaClient, Role, MenuType, OrderStatus } from "@prisma/client";
 import { faker } from "@faker-js/faker/locale/id_ID";
-import bcrypt from "bcrypt";
+import { hash } from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 
 const prisma = new PrismaClient();
@@ -142,7 +142,7 @@ async function main() {
   console.log("Existing data cleared.");
 
   console.log("Creating superadmin user...");
-  const superadminPassword = await bcrypt.hash("superadmin123", SALT_ROUNDS);
+  const superadminPassword = await hash("superadmin123", SALT_ROUNDS);
   await prisma.user.create({
     data: {
       username: "superadmin",
@@ -162,7 +162,7 @@ async function main() {
     const username = faker.internet
       .username({ firstName: name.split(" ")[0] })
       .toLowerCase();
-    const password = await bcrypt.hash("student123", SALT_ROUNDS);
+    const password = await hash("student123", SALT_ROUNDS);
     const avatarUrl = faker.image.avatar();
     const cloudinaryUrl = await uploadToCloudinary(
       avatarUrl,
@@ -202,7 +202,7 @@ async function main() {
     const username = faker.internet
       .username({ firstName: name.split(" ")[0] })
       .toLowerCase();
-    const password = await bcrypt.hash("standadmin123", SALT_ROUNDS);
+    const password = await hash("standadmin123", SALT_ROUNDS);
     const standNumber = faker.number.int({ max: 200 });
 
     await prisma.user.create({
